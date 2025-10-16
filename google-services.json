@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "599972124353",
+    "project_id": "tailor-business-management-app",
+    "storage_bucket": "tailor-business-management-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:599972124353:android:d5d86e1dc0e3725b39a640",
+        "android_client_info": {
+          "package_name": "com.kerrins.tailorbusinessmanagementapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "599972124353-anru6ntkcte4h06b82q4hr72on88qau0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHkmbFywY4_u4vgPNPKIpOgWdd7ZFtCGg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "599972124353-adcb1k4p48gh5hcpnc7k69skltj27c81.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
