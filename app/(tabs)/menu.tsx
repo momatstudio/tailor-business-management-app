@@ -1,12 +1,22 @@
+import { ThemedText } from "@/components/themed-text";
+import { ThemedView } from "@/components/themed-view";
 import React from "react";
-import { Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 
 const Menu = () => {
   return (
-    <View>
-      <Text>M</Text>
-    </View>
+    <ThemedView style={styles.container}>
+      <ThemedText>my account, my services</ThemedText>
+    </ThemedView>
   );
 };
 
 export default Menu;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

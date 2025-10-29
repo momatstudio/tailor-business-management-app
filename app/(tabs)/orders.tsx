@@ -1,25 +1,28 @@
-import { StyleSheet } from "react-native";
+import Banner from "@/components/Banner";
+import Header from "@/components/Header";
+import FloatingAddButton from "@/components/ui/FloatingAddButton";
+import { appInfo, bannerInfo } from "@/constants/data";
+import { useAuth } from "@/hooks/context/useAuth";
+import { useRouter } from "expo-router";
+import { ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
+export default function OrdersScreen() {
+  const router = useRouter();
+  const { user, isLoading } = useAuth();
 
-export default function Orders() {
   return (
-    <ThemedView style={{ flex: 1 }}>
-      <ThemedText>Hello Orders</ThemedText>
-    </ThemedView>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Header title={appInfo.name} description={appInfo.description} />
+      <ScrollView>
+        {bannerInfo.orders !== null && (
+          <Banner
+            welcomeMessage={bannerInfo.orders.welcomeMessage}
+            dailyUpdate={bannerInfo.orders.dailyUpdate}
+          />
+        )}
+      </ScrollView>
+      <FloatingAddButton onPress={() => {}} />
+    </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  headerImage: {
-    color: "#808080",
-    bottom: -90,
-    left: -35,
-    position: "absolute",
-  },
-  titleContainer: {
-    flexDirection: "row",
-    gap: 8,
-  },
-});

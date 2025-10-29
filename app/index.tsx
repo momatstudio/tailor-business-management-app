@@ -3,16 +3,19 @@ import { ThemedView } from "@/components/themed-view";
 import ButtonOne from "@/components/ui/ButtonOne";
 import SlidingImagesSection from "@/components/ui/SlidingImagesSection";
 import { AppColors } from "@/constants/colors";
+import { useAuth } from "@/hooks/context/useAuth";
 import { useWindowDimensions } from "@/hooks/use-windows-dimentions";
-import { signInWithGoogleAsync } from "@/services/googleAuth";
 import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 function Index() {
+  const { user, token, isLoading } = useAuth();
+  console.log("user token " + token);
   const router = useRouter();
   const { width, height } = useWindowDimensions();
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: AppColors.background }}>
       <ThemedView style={styles.container}>
@@ -35,11 +38,10 @@ function Index() {
         </View>
 
         <ButtonOne
-          title={"Sign in with Google"}
+          title={"Sign In with Google"}
           style={styles.googleButton}
           onPress={async () => {
             try {
-              await signInWithGoogleAsync();
               // router.replace("/home");
             } catch (e: any) {
               // handle error: show snackbar, alert, or logging
@@ -50,21 +52,21 @@ function Index() {
           }}
         />
         <ButtonOne
-          title={"Create an account"}
+          title={"Sign In with Email"}
           style={styles.secondaryButton}
-          onPress={() => router.push("/register")}
+          onPress={() => router.push("/signin")}
         />
         <View style={styles.bottomRow}>
           <ThemedText style={styles.bottomText}>
-            Already have an account?{" "}
+            Do not have account yet?{" "}
           </ThemedText>
           <TouchableOpacity
             onPress={() => {
               // Navigate to the SignIn screen;
-              router.push("/signin");
+              router.push("/register");
             }}
           >
-            <ThemedText style={styles.signInText}>Sign In</ThemedText>
+            <ThemedText style={styles.signInText}>Sign Up</ThemedText>
           </TouchableOpacity>
         </View>
       </ThemedView>
@@ -79,6 +81,11 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     backgroundColor: AppColors.background, // soft lavender
+  },
+  loading: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   imageWrapper: {
     alignItems: "center",

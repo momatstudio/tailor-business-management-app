@@ -4,8 +4,8 @@ import ButtonOne from "@/components/ui/ButtonOne";
 import CustomInputText from "@/components/ui/customInputText";
 import ScreenTitle from "@/components/ui/screenTitle";
 import { AppColors } from "@/constants/colors";
+import { useAuth } from "@/hooks/context/useAuth";
 import { useWindowDimensions } from "@/hooks/use-windows-dimentions";
-import { registerWithEmail } from "@/services/authService";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { ScrollView, StyleSheet, TouchableOpacity } from "react-native";
@@ -14,15 +14,38 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Register() {
   const { width, height } = useWindowDimensions();
-  const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [surname, setSurname] = useState("");
+  //  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  // const [surname, setSurname] = useState("");
   const [password, setPassword] = useState("");
   const [verifyPassword, setVerifyPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [snackbarVisible, setSnackbarVisible] = useState(false);
+  const { isLoading, setIsLoading, token, user, signUp } = useAuth();
 
+  const signUpHandler = async () => {
+    setError(null);
+    if (!email || !password || !verifyPassword) {
+      setError("All fields are required.");
+      setSnackbarVisible(true);
+      return;
+    }
+    if (password !== verifyPassword) {
+      setError("Passwords do not match.");
+      setSnackbarVisible(true);
+      return;
+    }
+    try {
+      setIsLoading(true);
+      await signUp(firstName, email, password, verifyPassword);
+      setPassword("");
+      setVerifyPassword("");
+    } catch (e: any) {
+      setError(e.message);
+      setSnackbarVisible(true);
+    }
+  };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: AppColors.background }}>
       <ScreenTitle title="Sign Up" />
@@ -39,12 +62,12 @@ export default function Register() {
             </ThemedText>
           </ThemedView>
           <CustomInputText
-            placeholder="your name"
-            label="First Name"
+            placeholder="Your full names"
+            label="Full Name"
             value={firstName}
             onChangeText={setFirstName}
           />
-          <CustomInputText
+          {/* <CustomInputText
             placeholder="your last name"
             label="Last Name"
             value={lastName}
@@ -55,7 +78,7 @@ export default function Register() {
             label="Surname"
             value={surname}
             onChangeText={setSurname}
-          />
+          /> */}
           <CustomInputText
             placeholder="e.g abc@mail.co.za"
             label="Email or Username"
@@ -64,14 +87,14 @@ export default function Register() {
           />
           <CustomInputText
             label={"Password"}
-            placeholder="******"
+            placeholder="************"
             value={password}
             onChangeText={setPassword}
             isPassword={true}
           />
           <CustomInputText
             label={"Verify Password"}
-            placeholder="******"
+            placeholder="************"
             value={verifyPassword}
             onChangeText={setVerifyPassword}
           />
@@ -92,30 +115,7 @@ export default function Register() {
             </ThemedText>
           )}
           */}
-          <ButtonOne
-            title={"Sign Up"}
-            style={{}}
-            onPress={async () => {
-              setError(null);
-              if (!email || !password || !verifyPassword) {
-                setError("All fields are required.");
-                setSnackbarVisible(true);
-                return;
-              }
-              if (password !== verifyPassword) {
-                setError("Passwords do not match.");
-                setSnackbarVisible(true);
-                return;
-              }
-              try {
-                await registerWithEmail(email, password);
-                // Navigate or show success
-              } catch (e: any) {
-                setError(e.message);
-                setSnackbarVisible(true);
-              }
-            }}
-          />
+          <ButtonOne title={"Sign Up"} style={{}} onPress={signUpHandler} />
         </ThemedView>
       </ScrollView>
       <Snackbar

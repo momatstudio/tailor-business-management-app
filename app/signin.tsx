@@ -3,10 +3,11 @@ import { ThemedView } from "@/components/themed-view";
 import ButtonOne from "@/components/ui/ButtonOne";
 import CustomInputText from "@/components/ui/customInputText";
 import { AppColors } from "@/constants/colors";
+import { useAuth } from "@/hooks/context/useAuth";
 import { useWindowDimensions } from "@/hooks/use-windows-dimentions";
-import { loginWithEmail } from "@/services/authService";
+import useAsyncStorage from "@/hooks/useAsyncStorage";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { router } from "expo-router";
+import { Redirect, router } from "expo-router";
 import React, { useState } from "react";
 import { ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import { Snackbar } from "react-native-paper";
@@ -18,8 +19,30 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [snackbarVisible, setSnackbarVisible] = useState(false);
+  const [token, setToken] = useAsyncStorage("token", null);
 
-  return (
+  const { signIn, isLoading, setIsLoading, user } = useAuth();
+
+  const signInHandler = async () => {
+    setError(null);
+    if (!email || !password) {
+      setError("Email and password are required.");
+      setSnackbarVisible(true);
+      return;
+    }
+    try {
+      setIsLoading(true);
+      await signIn(email, password);
+      setPassword("");
+    } catch (e: any) {
+      setError(e.message);
+      setSnackbarVisible(true);
+    }
+  };
+
+  return !token ? (
+    <Redirect href={"/(tabs)"} />
+  ) : (
     <SafeAreaView style={{ flex: 1, backgroundColor: AppColors.background }}>
       <ThemedView style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
@@ -67,25 +90,7 @@ export default function SignIn() {
               </ThemedText>
             </TouchableOpacity>
           </ThemedView>
-          <ButtonOne
-            title={"Sign In"}
-            style={{}}
-            onPress={async () => {
-              setError(null);
-              if (!email || !password) {
-                setError("Email and password are required.");
-                setSnackbarVisible(true);
-                return;
-              }
-              try {
-                await loginWithEmail(email, password);
-                // Navigate or show success
-              } catch (e: any) {
-                setError(e.message);
-                setSnackbarVisible(true);
-              }
-            }}
-          />
+          <ButtonOne title={"Sign In"} style={{}} onPress={signInHandler} />
         </ThemedView>
       </ScrollView>
       <Snackbar

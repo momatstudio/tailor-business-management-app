@@ -47,7 +47,7 @@ const CustomInputText = ({
           onBlur={() => setKeyboardActive(false)}
           value={value}
           onChangeText={onChangeText}
-          secureTextEntry
+          // secureTextEntry
         />
       )}
     </ThemedView>

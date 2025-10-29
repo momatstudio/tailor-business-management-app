@@ -10,4 +10,23 @@ export const AppColors = {
   white: "#fff", // pure white
   dark: "#23243A", // dark
   lightGrey: "#F6F6F6", // very light grey
+  black: "#000000", // pure black
+  grey: "#7D7D89", // medium grey
+
+  iconColors: {
+    facebook: "#3b5998",
+    google: "#db4a39",
+
+    linkedin: "#689ff8",
+    lightBlue: "#ebf2fe",
+
+    lightPurple: "#f6eefe",
+    purple: "#c48cfa",
+
+    lightGreen: "#e8f9ef",
+    green: "#4ed17e",
+
+    lightOrangle: "#fef1e7",
+    orangle: "#fa8839",
+  },
 };

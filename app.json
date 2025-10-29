@@ -9,8 +9,7 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true,
-      "googleServicesFile": "./GoogleService-Info.plist"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
@@ -29,7 +28,12 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router",
+      [
+        "expo-router",
+        {
+          "origin": "https://tailormanagerapi.momatstudio.co.za"
+        }
+      ],
       [
         "expo-splash-screen",
         {
@@ -42,8 +46,7 @@
           }
         }
       ],
-      "expo-font",
-      "@react-native-google-signin/google-signin"
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true,
